@@ -1,0 +1,528 @@
+/* ---------------------------------------------------------------------------
+ * styles.css
+ *
+ * Shared styling for the Project Forms UI.
+ *
+ * Design goals:
+ * - High contrast (readable in bright environments and accessible by default)
+ * - Touch-friendly controls (44px minimum tap targets)
+ * - Layout that scales from mobile to very wide screens
+ * - Minimal visual dependencies on colour alone (e.g., chart has dash/point styles)
+ *
+ * Notes:
+ * - Keep CSS organized by component: base, layout, components, utilities.
+ * - Prefer classes over inline styles where feasible; some inline styles remain
+ *   in JS-generated admin modals for flexibility.
+ * ------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------
+ * Theme tokens
+ * ------------------------------------------------------------------------- */
+:root {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3f4f6;
+  --text: #111827;
+  --muted: #374151;
+  --border: #111827;
+  --accent: #005fcc;
+  --danger: #b00020;
+
+  --radius: 14px;
+  --shadow: 0 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+/* ---------------------------------------------------------------------------
+ * Base
+ * ------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell,
+    Noto Sans, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+}
+
+p {
+  margin: 0 0 10px 0;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Layout helpers
+ * ------------------------------------------------------------------------- */
+.container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.container--wide {
+  max-width: 1920px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 920px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+ * Cards / panels
+ * ------------------------------------------------------------------------- */
+.card {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  box-shadow: var(--shadow);
+}
+
+.card.subcard {
+  background: var(--surface-2);
+}
+
+.panel {
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.panel-header {
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface-2);
+}
+
+.panel-body {
+  padding: 12px 14px;
+  overflow: auto;
+  flex: 1;
+}
+
+/* Header layout variants */
+.header-with-control {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.panel-header-text {
+  min-width: 0;
+}
+
+.panel-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Typography helpers
+ * ------------------------------------------------------------------------- */
+.small {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.small.required {
+  font-weight: 900;
+}
+
+.error {
+  color: var(--danger);
+  font-weight: 800;
+}
+
+.ok {
+  color: #0b6e4f;
+  font-weight: 800;
+}
+
+/* Screen-reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Forms / controls
+ * ------------------------------------------------------------------------- */
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  min-height: 44px;
+}
+
+textarea {
+  min-height: 100px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #4b5563;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+  font-weight: 800;
+  background: var(--text);
+  color: #ffffff;
+  border: 2px solid var(--text);
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+button.secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+button.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #ffffff;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Inline checkbox label (supports both historical class names). */
+.checkbox-inline,
+.check-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  user-select: none;
+}
+
+.checkbox-inline input,
+.check-inline input {
+  width: 18px;
+  height: 18px;
+  accent-color: #111827;
+}
+
+/* ---------------------------------------------------------------------------
+ * Tabs
+ * ------------------------------------------------------------------------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+.tab {
+  background: var(--surface);
+  color: var(--text);
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: var(--text);
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------------------------
+ * Lists / key-value display
+ * ------------------------------------------------------------------------- */
+.list {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: auto;
+  background: var(--surface);
+}
+
+.list-item {
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--border);
+  cursor: pointer;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item.active {
+  background: var(--surface-2);
+  font-weight: 900;
+}
+
+.kv {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.k {
+  font-weight: 900;
+}
+
+.v {
+  white-space: pre-wrap;
+}
+
+.badge {
+  display: inline-block;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 900;
+  background: var(--surface-2);
+}
+
+.req {
+  color: var(--danger);
+  font-weight: 900;
+  margin-left: 4px;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 12px 0;
+}
+
+/* ---------------------------------------------------------------------------
+ * Modal
+ * ------------------------------------------------------------------------- */
+.modal-backdrop {
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-backdrop[aria-hidden="false"] {
+  display: flex;
+}
+
+.modal-host {
+  width: 100%;
+  max-width: 760px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 760px;
+}
+
+.record-detail {
+  padding: 10px;
+}
+
+/* ---------------------------------------------------------------------------
+ * App layout
+ * ------------------------------------------------------------------------- */
+.topbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+
+  /* Keep the top bar visible while scrolling */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--bg);
+  padding: 10px 0;
+  border-bottom: 2px solid var(--border);
+}
+
+.topbar > * {
+  max-width: 100%;
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 12px;
+  min-height: calc(100vh - 220px);
+}
+
+.panel-left {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.panel-tr {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.panel-br {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+
+@media (max-width: 980px) {
+  .panel-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    min-height: auto;
+  }
+
+  .panel-left,
+  .panel-tr,
+  .panel-br {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+.split {
+  display: flex;
+  gap: 10px;
+  height: 100%;
+}
+
+.split > .list {
+  width: 30%;
+  min-width: 180px;
+}
+
+.split > .subcard {
+  width: 70%;
+}
+
+.panel .list {
+  height: 100%;
+}
+
+@media (max-width: 920px) {
+  .split {
+    flex-direction: column;
+  }
+
+  .split > .list,
+  .split > .subcard {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+/* Form sizing for wide screens (reduces horizontal scanning). */
+.field {
+  margin: 10px 0;
+}
+
+#formContainer .field {
+  width: 80%;
+}
+
+#formContainer .field input[type="text"],
+#formContainer .field input[type="number"],
+#formContainer .field input[type="date"],
+#formContainer .field select,
+#formContainer .field textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 1100px) {
+  #formContainer .field {
+    width: 100%;
+  }
+}
+
+.form-section {
+  margin: 14px 0 0 0;
+  padding-top: 12px;
+  border-top: 2px solid var(--border);
+}
+
+canvas {
+  background: var(--surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

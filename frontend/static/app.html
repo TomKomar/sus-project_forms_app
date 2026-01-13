@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>App • Project Forms</title>
+
+  <link rel="stylesheet" href="/styles.css?v=6" />
+
+  <!-- Chart.js is loaded globally for the numeric trends panel. -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+  <noscript>
+    <div class="container">
+      <div class="card">
+        <h1>Project Forms</h1>
+        <p>This application requires JavaScript enabled in your browser.</p>
+      </div>
+    </div>
+  </noscript>
+
+  <div class="container container--wide">
+    <header class="topbar" role="banner">
+      <div class="row wrap topbar__left" style="flex: 1;">
+        <label class="sr-only" for="projectSearch">Search projects</label>
+        <input
+          id="projectSearch"
+          type="search"
+          placeholder="Search projects…"
+          autocomplete="off"
+          inputmode="search"
+          style="min-width: 220px; max-width: 320px;"
+        />
+
+        <label class="sr-only" for="projectSelect">Select project</label>
+        <select id="projectSelect" style="min-width: 320px;" aria-label="Select project"></select>
+
+        <span id="who" class="small" aria-live="polite"></span>
+      </div>
+
+      <div class="row topbar__right">
+        <button id="apiTokenBtn" type="button" title="Generate API token for programmatic access">
+          API token
+        </button>
+        <button id="logoutBtn" type="button" class="danger">Logout</button>
+      </div>
+    </header>
+
+    <nav id="tabs" class="tabs" aria-label="Primary navigation"></nav>
+
+    <main id="mainView">
+      <div class="panel-grid">
+        <section class="card panel panel-left" aria-labelledby="formTitle">
+          <div class="panel-header">
+            <h2 id="formTitle">Form</h2>
+            <p class="small" id="formHint" aria-live="polite"></p>
+          </div>
+          <div class="panel-body" id="formContainer"></div>
+        </section>
+
+        <section class="card panel panel-tr" aria-labelledby="recordsTitle">
+          <div class="panel-header">
+            <h2 id="recordsTitle">Previous records</h2>
+          </div>
+          <div class="panel-body">
+            <div class="split">
+              <div class="list" id="recordList" aria-label="Record list"></div>
+              <div class="card subcard">
+                <div id="recordDetail" class="record-detail" aria-live="polite"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card panel panel-br" aria-labelledby="chartTitle">
+          <div class="panel-header header-with-control">
+            <div class="panel-header-text">
+              <h2 id="chartTitle">Numeric trends</h2>
+              <p class="small">Legend items can be toggled on/off.</p>
+            </div>
+            <div class="panel-header-controls">
+              <label class="checkbox-inline" for="numericChartColour">
+                <input id="numericChartColour" type="checkbox" />
+                Colour
+              </label>
+            </div>
+          </div>
+          <div class="panel-body">
+            <canvas id="chart" height="400" aria-label="Numeric trends chart" role="img"></canvas>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <div id="adminView" style="display:none;">
+      <div class="card">
+        <div id="adminContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal host -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div id="modal" class="modal-host" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <script src="/common.js?v=9" defer></script>
+  <script src="/app.js?v=23" defer></script>
+</body>
+</html>

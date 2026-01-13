@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login • Project Forms</title>
+  <link rel="stylesheet" href="/styles.css?v=6" />
+</head>
+<body>
+  <div class="container">
+    <main class="card" aria-labelledby="pageTitle">
+      <h1 id="pageTitle">Project Forms</h1>
+      <p>Login to continue.</p>
+
+      <form id="loginForm" class="row wrap" style="margin-top: 12px;">
+        <label class="sr-only" for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="Email"
+          autocomplete="username"
+          required
+          style="flex: 1; min-width: 240px;"
+        />
+
+        <label class="sr-only" for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+          required
+          style="flex: 1; min-width: 240px;"
+        />
+
+        <button id="loginBtn" type="submit">Login</button>
+      </form>
+
+      <p id="msg" class="small" style="margin-top: 10px;" role="status" aria-live="polite"></p>
+      <p class="small">Need an invite? Ask an admin for a registration link + secret.</p>
+    </main>
+  </div>
+
+  <script src="/common.js?v=9" defer></script>
+  <script defer>
+    /* -----------------------------------------------------------------------
+     * index.html (login page)
+     *
+     * This script:
+     * - Redirects to the app if a session already exists.
+     * - Submits credentials to /api/login and navigates to /app.html on success.
+     * - Shows user-friendly errors on failure.
+     * --------------------------------------------------------------------- */
+
+    (function () {
+      'use strict';
+
+      async function redirectIfLoggedIn() {
+        try {
+          const me = await apiGet('/api/me');
+          if (me && me.email) window.location.href = '/app.html';
+        } catch {
+          // Not signed in; stay on this page.
+        }
+      }
+
+      function setMessage(text, variant) {
+        const msg = document.getElementById('msg');
+        msg.textContent = text || '';
+        msg.className = variant ? `small ${variant}` : 'small';
+      }
+
+      async function onSubmit(event) {
+        event.preventDefault();
+
+        const btn = document.getElementById('loginBtn');
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+
+        setMessage('');
+
+        btn.disabled = true;
+        try {
+          await apiPost('/api/login', { email, password });
+          window.location.href = '/app.html';
+        } catch (e) {
+          setMessage(e && e.message ? e.message : 'Login failed', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        redirectIfLoggedIn();
+        document.getElementById('loginForm').addEventListener('submit', onSubmit);
+        document.getElementById('email').focus();
+      });
+    })();
+  </script>
+</body>
+</html>

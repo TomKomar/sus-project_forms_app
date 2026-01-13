@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register • Project Forms</title>
+  <link rel="stylesheet" href="/styles.css?v=6" />
+</head>
+<body>
+  <div class="container">
+    <main class="card" aria-labelledby="pageTitle">
+      <h1 id="pageTitle">Register</h1>
+      <p>Enter the secret provided separately by the admin.</p>
+
+      <form id="registerForm">
+        <div class="row wrap" style="margin-top: 12px;">
+          <label class="sr-only" for="secret">Invite secret</label>
+          <input
+            id="secret"
+            name="secret"
+            type="text"
+            placeholder="Secret"
+            autocomplete="one-time-code"
+            required
+            style="flex: 1; min-width: 220px;"
+          />
+
+          <label class="sr-only" for="email">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="Email"
+            autocomplete="username"
+            required
+            style="flex: 1; min-width: 220px;"
+          />
+        </div>
+
+        <div class="row wrap" style="margin-top: 12px;">
+          <label class="sr-only" for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Password"
+            autocomplete="new-password"
+            required
+            style="flex: 1; min-width: 220px;"
+          />
+
+          <label class="sr-only" for="password2">Confirm password</label>
+          <input
+            id="password2"
+            name="password_confirm"
+            type="password"
+            placeholder="Confirm password"
+            autocomplete="new-password"
+            required
+            style="flex: 1; min-width: 220px;"
+          />
+
+          <button id="registerBtn" type="submit">Register</button>
+        </div>
+
+        <p id="msg" class="small" style="margin-top: 10px;" role="status" aria-live="polite"></p>
+      </form>
+
+      <p class="small"><a href="/index.html">Back to login</a></p>
+    </main>
+  </div>
+
+  <script src="/common.js?v=9" defer></script>
+  <script defer>
+    /* -----------------------------------------------------------------------
+     * register.html (registration page)
+     *
+     * This script:
+     * - Reads the invite key from the URL query string (?key=...).
+     * - Submits {secret, email, password, password_confirm} to /api/register.
+     * - Redirects to /app.html on success.
+     * --------------------------------------------------------------------- */
+
+    (function () {
+      'use strict';
+
+      const params = new URLSearchParams(window.location.search);
+      const inviteKey = params.get('key') || '';
+
+      function setMessage(text, variant) {
+        const msg = document.getElementById('msg');
+        msg.textContent = text || '';
+        msg.className = variant ? `small ${variant}` : 'small';
+      }
+
+      async function onSubmit(event) {
+        event.preventDefault();
+
+        if (!inviteKey) {
+          setMessage('Missing invite key in URL', 'error');
+          return;
+        }
+
+        const btn = document.getElementById('registerBtn');
+
+        const secret = document.getElementById('secret').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const password_confirm = document.getElementById('password2').value;
+
+        setMessage('');
+
+        btn.disabled = true;
+        try {
+          await apiPost(`/api/register?key=${encodeURIComponent(inviteKey)}`, {
+            secret,
+            email,
+            password,
+            password_confirm
+          });
+          window.location.href = '/app.html';
+        } catch (e) {
+          setMessage(e && e.message ? e.message : 'Registration failed', 'error');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('registerForm').addEventListener('submit', onSubmit);
+        document.getElementById('secret').focus();
+      });
+    })();
+  </script>
+</body>
+</html>
