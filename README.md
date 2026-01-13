@@ -425,7 +425,7 @@ Typical layout based on Compose build context:
 │  ├─ middleware.py
 │  ├─ utils.py
 │  ├─ config.py
-│  └─ (Dockerfile, requirements, etc.)
+│  └─ (Dockerfile, requirements)
 ├─ frontend/
 │  ├─ index.html
 │  ├─ register.html
@@ -434,10 +434,10 @@ Typical layout based on Compose build context:
 │  ├─ common.js
 │  ├─ styles.css
 │  ├─ nginx.conf
-│  └─ (Dockerfile, etc.)
+│  └─ (Dockerfile)
 └─ proxy/
    ├─ nginx.conf
-   └─ (Dockerfile, etc.)
+   └─ (Dockerfile)
 ```
 
 ---
