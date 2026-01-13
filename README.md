@@ -90,7 +90,7 @@ From `docker-compose.yml`:
 
 ### Prerequisites
 - Docker + Docker Compose (v2)
-- Ports available: `8082` (or adjust compose)
+- Ports available: `8082` (or adjust compose fit to your setup)
 
 ### Run the stack
 From the repo root where `docker-compose.yml` lives:
@@ -356,8 +356,8 @@ The backend includes a lightweight “auto-add missing columns” migration rout
 
 ### “Bootstrap invite shows localhost:8080”
 
-That message is printed by the backend and may reflect a non-compose run.
-When using Compose, use:
+That's affected by *my local* setup, adjust docker-compose.yml to *your setup*.
+When using *this compose*, use:
 
 * `http://localhost:8082/register.html?key=...`
 
